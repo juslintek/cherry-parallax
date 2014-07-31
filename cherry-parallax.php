@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) )
 exit;
 
 class cherry_parallax {
-  
+
   public $version = '1.0';
 
   function __construct() {
@@ -61,12 +61,30 @@ class cherry_parallax {
         'width'        => '1920',
         'speed'        => '3',
         'custom_class' => ''
-      ), 
-      $atts, 
-      'cherry_parallax' 
+      ),
+      $atts,
+      'cherry_parallax'
     ));
     if ( !$image ) {
       return;
+    }
+
+    // Get the URL to the content area.
+    $content_url = untrailingslashit( content_url() );
+
+    // Find latest '/' in content URL.
+    $last_slash_pos = strrpos( $content_url, '/' );
+
+    // 'wp-content' or something else.
+    $content_dir_name = substr( $content_url, $last_slash_pos - strlen( $content_url ) + 1 );
+
+    $pos = strpos( $image, $content_dir_name );
+
+    if ( false !== $pos ) {
+
+      $img_new = substr( $image, $pos + strlen( $content_dir_name ), strlen( $image ) - $pos );
+      $image   = $content_url . $img_new;
+
     }
 
     $width = intval($width);
@@ -78,7 +96,7 @@ class cherry_parallax {
     $result .= '</section>';
 
     $result = apply_filters( 'cherry_plugin_shortcode_output', $result, $atts, 'cherry_parallax' );
-    
+
     return $result;
   }
 
