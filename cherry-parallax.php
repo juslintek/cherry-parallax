@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Cherry Parallax Plugin
-  Version: 1.0
+  Version: 1.0.1
   Plugin URI: http://www.cherryframework.com/
   Description: Create blocks with parallax effect
   Author: Cherry Team.
