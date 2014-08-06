@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) )
 exit;
 
 class cherry_parallax {
-
-  public $version = '1.0';
+  
+  public $version = '1.0.1';
 
   function __construct() {
     add_action( 'wp_enqueue_scripts', array( $this, 'assets' ) );
@@ -23,8 +23,9 @@ class cherry_parallax {
   }
 
   function assets() {
+    wp_enqueue_script( 'chrome-smoothing-scroll', $this->url('js/utilits.js'), array('jquery'), '1.0', true );
     wp_enqueue_script( 'cherry-parallax', $this->url('js/cherry.parallax.js'), array('jquery'), $this->version, true );
-    wp_enqueue_script('device-check', $this->url('js/device.min.js'), array('jquery'), '1.0.0', true );
+    wp_enqueue_script( 'device-check', $this->url('js/device.min.js'), array('jquery'), '1.0.0', true );   
     wp_enqueue_style( 'cherry-parallax', $this->url('css/parallax.css'), '', $this->version );
   }
 
@@ -57,9 +58,9 @@ class cherry_parallax {
    */
   function parallax_shortcode( $atts, $content = null ) {
     extract(shortcode_atts( array(
-        'image'        => '',
-        'width'        => '1920',
-        'speed'        => '3',
+        'image' => '',
+        'width' => '1920',
+        'speed' => '3',
         'custom_class' => ''
       ),
       $atts,
@@ -82,17 +83,17 @@ class cherry_parallax {
 
     if ( false !== $pos ) {
 
-      $img_new = substr( $image, $pos + strlen( $content_dir_name ), strlen( $image ) - $pos );
-      $image   = $content_url . $img_new;
+    $img_new = substr( $image, $pos + strlen( $content_dir_name ), strlen( $image ) - $pos );
+    $image = $content_url . $img_new;
 
     }
 
     $width = intval($width);
 
     $result = '<section class="parallax-box ' . esc_attr( $custom_class ) . '">';
-      $result .= '<div class="parallax-content">' . do_shortcode( $content ) . '</div>';
-      $default_css = apply_filters( 'cherry_parallax_css', 'background:url(\'' . $image . '\') no-repeat center 0; left:50%; margin-left:-' . ($width/2) . 'px; width:' . $width . 'px', $custom_class );
-      $result .= '<div data-speed="' . $speed . '" class="parallax-bg" style="' . $default_css . '"></div>';
+    $result .= '<div class="parallax-content">' . do_shortcode( $content ) . '</div>';
+    $default_css = apply_filters( 'cherry_parallax_css', 'background:url(\'' . $image . '\') no-repeat center 0; left:50%; margin-left:-' . ($width/2) . 'px; width:' . $width . 'px', $custom_class );
+    $result .= '<div data-speed="' . $speed . '" class="parallax-bg" style="' . $default_css . '"></div>';
     $result .= '</section>';
 
     $result = apply_filters( 'cherry_plugin_shortcode_output', $result, $atts, 'cherry_parallax' );
